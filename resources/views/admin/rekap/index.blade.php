@@ -24,50 +24,88 @@
         }
     }" class="space-y-6">
 
+        <!-- Navigation Tabs: Harian vs Bulanan -->
+        <div class="flex border-b border-slate-200">
+            <a href="{{ route('admin.rekap.index') }}"
+               class="py-3 px-5 text-sm font-semibold border-b-2 border-indigo-600 text-indigo-600 transition-all flex items-center gap-2">
+                <x-icon name="calendar" class="w-4 h-4 text-indigo-600" />
+                <span>Rekap Harian (Log Presensi)</span>
+            </a>
+            <a href="{{ route('admin.rekap.bulanan') }}"
+               class="py-3 px-5 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-300 transition-all flex items-center gap-2">
+                <x-icon name="calendar" class="w-4 h-4 text-slate-400" />
+                <span>Rekap Bulanan (Per Pegawai)</span>
+            </a>
+        </div>
+
         <!-- Filter Bar -->
         <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-xs">
-            <form method="GET" action="{{ route('admin.rekap.index') }}" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 items-end">
-                <div>
-                    <label for="start_date" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Dari Tanggal</label>
-                    <input type="date" id="start_date" name="start_date" value="{{ $startDate }}"
-                           class="w-full py-2 px-3 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+            <form method="GET" action="{{ route('admin.rekap.index') }}" class="space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 items-end">
+                    <div>
+                        <label for="bulan" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Filter Bulan</label>
+                        <select id="bulan" name="bulan"
+                                class="w-full py-2 px-3 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white">
+                            <option value="">Pilih Bulan...</option>
+                            @foreach($daftarBulan as $num => $nama)
+                                <option value="{{ $num }}" {{ (request('bulan') == $num || $bulan == $num) ? 'selected' : '' }}>{{ $nama }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="tahun" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Filter Tahun</label>
+                        <select id="tahun" name="tahun"
+                                class="w-full py-2 px-3 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white">
+                            <option value="">Pilih Tahun...</option>
+                            @foreach($daftarTahun as $thn)
+                                <option value="{{ $thn }}" {{ (request('tahun') == $thn || $tahun == $thn) ? 'selected' : '' }}>{{ $thn }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="start_date" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Dari Tanggal</label>
+                        <input type="date" id="start_date" name="start_date" value="{{ $startDate }}"
+                               class="w-full py-2 px-3 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+
+                    <div>
+                        <label for="end_date" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Sampai Tanggal</label>
+                        <input type="date" id="end_date" name="end_date" value="{{ $endDate }}"
+                               class="w-full py-2 px-3 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+
+                    <div>
+                        <label for="id_pegawai" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Pegawai</label>
+                        <select id="id_pegawai" name="id_pegawai"
+                                class="w-full py-2 px-3 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white">
+                            <option value="">Semua Pegawai</option>
+                            @foreach($pegawais as $p)
+                                <option value="{{ $p->id }}" {{ $pegawaiId == $p->id ? 'selected' : '' }}>{{ $p->nama }} ({{ $p->nrg }})</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="lokasi" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Lokasi Kantor</label>
+                        <select id="lokasi" name="lokasi"
+                                class="w-full py-2 px-3 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white">
+                            <option value="">Semua Lokasi</option>
+                            @foreach($lokasis as $l)
+                                <option value="{{ $l->nama_lokasi }}" {{ $lokasiName == $l->nama_lokasi ? 'selected' : '' }}>{{ $l->nama_lokasi }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
 
-                <div>
-                    <label for="end_date" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Sampai Tanggal</label>
-                    <input type="date" id="end_date" name="end_date" value="{{ $endDate }}"
-                           class="w-full py-2 px-3 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                </div>
-
-                <div>
-                    <label for="id_pegawai" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Pegawai</label>
-                    <select id="id_pegawai" name="id_pegawai"
-                            class="w-full py-2 px-3 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white">
-                        <option value="">Semua Pegawai</option>
-                        @foreach($pegawais as $p)
-                            <option value="{{ $p->id }}" {{ $pegawaiId == $p->id ? 'selected' : '' }}>{{ $p->nama }} ({{ $p->nrg }})</option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div>
-                    <label for="lokasi" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Lokasi Kantor</label>
-                    <select id="lokasi" name="lokasi"
-                            class="w-full py-2 px-3 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white">
-                        <option value="">Semua Lokasi</option>
-                        @foreach($lokasis as $l)
-                            <option value="{{ $l->nama_lokasi }}" {{ $lokasiName == $l->nama_lokasi ? 'selected' : '' }}>{{ $l->nama_lokasi }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="flex gap-2">
-                    <button type="submit" class="flex-1 py-2 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm rounded-lg shadow-xs transition-colors">
-                        Terapkan
-                    </button>
-                    <a href="{{ route('admin.rekap.index') }}" class="py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-medium rounded-lg transition-colors" title="Reset filter">
-                        Reset
+                <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
+                    <a href="{{ route('admin.rekap.index') }}" class="py-2 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-medium rounded-lg transition-colors" title="Reset filter">
+                        Reset Filter
                     </a>
+                    <button type="submit" class="py-2 px-5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm rounded-lg shadow-xs transition-colors cursor-pointer">
+                        Terapkan Filter
+                    </button>
                 </div>
             </form>
         </div>

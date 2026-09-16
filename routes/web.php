@@ -42,9 +42,12 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     // Lokasi Presensi CRUD
     Route::resource('lokasi', AdminLokasiController::class);
 
-    // Rekap Presensi
+    // Rekap Presensi (Harian & Bulanan)
     Route::get('/rekap', [AdminRekapController::class, 'index'])->name('rekap.index');
     Route::get('/rekap/print', [AdminRekapController::class, 'print'])->name('rekap.print');
+    Route::get('/rekap/bulanan', [AdminRekapController::class, 'bulanan'])->name('rekap.bulanan');
+    Route::get('/rekap/bulanan/print', [AdminRekapController::class, 'printBulanan'])->name('rekap.bulanan.print');
+    Route::get('/rekap/bulanan/{pegawai}/detail', [AdminRekapController::class, 'detailBulanan'])->name('rekap.bulanan.detail');
 
     // Ketidakhadiran / Pengajuan Izin
     Route::get('/ketidakhadiran', [AdminKetidakhadiranController::class, 'index'])->name('ketidakhadiran.index');

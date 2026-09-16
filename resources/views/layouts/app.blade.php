@@ -124,9 +124,14 @@
                             <div class="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Presensi & Izin</div>
                             <nav class="space-y-1">
                                 <a href="{{ route('admin.rekap.index') }}" 
-                                   class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('admin.rekap.*') ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
-                                    <x-icon name="calendar" class="w-5 h-5 {{ request()->routeIs('admin.rekap.*') ? 'text-indigo-600' : 'text-slate-400' }}" />
-                                    <span>Rekap Presensi</span>
+                                   class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('admin.rekap.index') ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
+                                    <x-icon name="calendar" class="w-5 h-5 {{ request()->routeIs('admin.rekap.index') ? 'text-indigo-600' : 'text-slate-400' }}" />
+                                    <span>Rekap Harian</span>
+                                </a>
+                                <a href="{{ route('admin.rekap.bulanan') }}" 
+                                   class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('admin.rekap.bulanan*') ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
+                                    <x-icon name="calendar" class="w-5 h-5 {{ request()->routeIs('admin.rekap.bulanan*') ? 'text-indigo-600' : 'text-slate-400' }}" />
+                                    <span>Rekap Bulanan</span>
                                 </a>
                                 <a href="{{ route('admin.ketidakhadiran.index') }}" 
                                    class="flex items-center justify-between px-3 py-2 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('admin.ketidakhadiran.*') ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
